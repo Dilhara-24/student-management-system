@@ -277,7 +277,7 @@ export default function Logs() {
             </div>
           </div>
 
-          <div className="s-pf">© 2024 University Student Management System • Version 1.0</div>
+          <div className="s-pf">Student Management System</div>
         </div>
       </div>
     </>
