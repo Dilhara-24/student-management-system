@@ -74,7 +74,7 @@ const styles = `
   .a-name { font-weight:600; font-size:13.5px; }
   .a-user { font-size:11.5px; color:var(--text3); margin-top:1px; }
   .role-badge { display:inline-flex; padding:3px 10px; border-radius:20px; font-size:11.5px; font-weight:700; }
-  .tbl-btn { height:28px; width:28px; border-radius:6px; border:1.5px solid var(--border); background:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text2); transition:border-color .15s,color .15s; }
+  .tbl-btn { height:28px; width:28px; border-radius:6px; border:1.5px solid var(--border); background:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text2); transition:border-color .15s,color .15s; flex-shrink:0; overflow:visible; }
   .tbl-btn:hover { border-color:var(--accent); color:var(--accent); }
   .s-foot { padding:12px 20px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
   .s-fi { font-size:12.5px; color:var(--text3); }
@@ -157,7 +157,7 @@ export default function Admins() {
   const [roleF,    setRoleF]    = useState('all');
   const [page,     setPage]     = useState(1);
 
-  const [panel,    setPanel]    = useState(null); // 'add' | 'edit' | 'profile'
+  const [panel,    setPanel]    = useState(null);
   const [selected, setSelected] = useState(null);
   const [form,     setForm]     = useState(EMPTY_FORM);
   const [formErr,  setFormErr]  = useState({});
@@ -245,8 +245,6 @@ export default function Admins() {
       <div className={`ov${isOpen?' open':''}`} onClick={closePanel}/>
 
       <div className={`sp${isOpen?' open':''}`}>
-
-        {/* ADD */}
         {panel === 'add' && <>
           <div className="ph">
             <div><div className="ph-t">Add New Admin</div><div className="ph-s">Create a new system administrator account</div></div>
@@ -294,7 +292,6 @@ export default function Admins() {
           </div>
         </>}
 
-        {/* EDIT */}
         {panel === 'edit' && <>
           <div className="ph">
             <div><div className="ph-t">Edit Admin</div><div className="ph-s">Editing {selected?.username}</div></div>
@@ -342,7 +339,6 @@ export default function Admins() {
           </div>
         </>}
 
-        {/* PROFILE */}
         {panel === 'profile' && selected && (() => {
           const rs = roleStyle(selected.role);
           const initials = selected.full_name
@@ -463,17 +459,17 @@ export default function Admins() {
                             <td style={{fontSize:13,color:'var(--text2)'}}>{formatDate(a.created_at)}</td>
                             <td onClick={e=>e.stopPropagation()}>
                               <div style={{display:'flex',gap:6}}>
-                                <button className="tbl-btn" onClick={() => {
+                                <button style={{height:28,padding:'0 10px',borderRadius:6,border:'1.5px solid #e5e7eb',background:'#fff',fontFamily:'var(--fb)',fontSize:12,fontWeight:600,color:'#6b7280',cursor:'pointer'}} onClick={() => {
                                     setSelected(a);
                                     setForm({ username: a.username, password:'', full_name: a.full_name||'', email: a.email||'', role: a.role||'Admin' });
                                     setFormErr({}); setGErr(''); setPanel('edit');
-                                  }} title="Edit">{Ic.edit}</button>
+                                  }}>Edit</button>
                                 {a.id !== currentAdminId && (
-                                  <button className="tbl-btn" onClick={() => {
+                                  <button style={{height:28,padding:'0 10px',borderRadius:6,border:'1.5px solid #fca5a5',background:'#fff',fontFamily:'var(--fb)',fontSize:12,fontWeight:600,color:'#dc2626',cursor:'pointer'}} onClick={() => {
                                     if(window.confirm(`Delete admin "${a.username}"?`)) {
                                       deleteAdmin(a.id).then(load).catch(err => alert(err.message));
                                     }
-                                  }} title="Delete" style={{color:'#dc2626',borderColor:'#fca5a5'}}>{Ic.trash}</button>
+                                  }}>Del</button>
                                 )}
                               </div>
                             </td>
