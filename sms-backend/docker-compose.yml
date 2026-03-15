@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./sms-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=host.docker.internal
+      - DB_PORT=5432
+      - DB_NAME=sms_db
+      - DB_USER=postgres
+      - DB_PASSWORD=0077
+      - JWT_SECRET=mysupersecretkey
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  frontend:
+    build: ./sms-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
